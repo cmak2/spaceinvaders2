@@ -1,0 +1,23 @@
+body {
+	background-color: black;
+}
+
+#title {
+	text-align: center;
+	font-size: 4em;
+	font-family: Impact;
+	color: white;
+}
+#canvas {
+	
+	border: 2px solid white;
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    
+}
+#foot {
+	text-align: center;
+}
