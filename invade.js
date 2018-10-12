@@ -262,6 +262,7 @@ function checkCollide(ctx){
               if (left < alienArray[x].column + alienArray[x].alienX && right > alienArray[x].column && up < alienArray[x].row + alienArray[x].alienY && down > alienArray[x].row){
                 //remove aliens
                 type = alienArray[x].type;
+                incrementScore(type);
                 alienArray[x] = null;
                 aliensLeft = aliensLeft - 1;
                 collide.push(i);
@@ -629,11 +630,28 @@ function dealWithKeyboard(event){
 }
 /*-------------------------------*/
 
-function incrementScore(score) {
+function incrementScore(type) {
   //Increments playerScore
   //Adjusts High Score if necessary
-  playerScore = playerScore + score;
 
+      switch(type) {
+        case 0:
+            playerScore = playerScore + 200;
+          break;
+        case 1:
+            playerScore = playerScore + 100;
+          break;
+        case 2:
+            playerScore = playerScore + 50;
+          break;
+        case 3:
+            playerScore = playerScore + 25;
+          break;
+        //case 4:
+        default:
+            playerScore = playerScore + 10;
+          break;
+      }
 }
 
 //need to change array to hold alien x and y position instead of 0/1, negative 1 vals can signify the alien is dead
