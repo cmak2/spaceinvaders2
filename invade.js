@@ -321,10 +321,13 @@ function redrawMissile(ctx){
   
 }
 function alienShoot(ctx, aliensLeft){
-	//call the rng function to select a ship
-	//draw a missile moving from that ship towards the bottom
-	//if the missile hits a barrier, redraw the barrier with the piece missing
-	//if the missile hits the ship, redraw the ship in the center and take away a life
+  //call the rng function to select a ship
+  shooter = alienArray[rngShoot(aliensLeft)];
+  //draw a missile moving from that ship towards the bottom
+  shot = Object.create(projectile);
+  shot.projX = shooter.alienX;
+  shot.projY = shooter.projY;
+  projectileArray.push(shot);
 }
 
 function playerShoot(ctx){
