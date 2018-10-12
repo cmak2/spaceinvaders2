@@ -218,7 +218,7 @@ function drawAliens(ctx){
       nAlien.height = height;
       nAlien.width  = width;
       nAlien.row = i;
-      nAlien.column = j;
+      nAlien.column = y;
       ctx.fillStyle = "green";
       //ctx.fillCircle(width,height, 25, 25);
       ctx.beginPath();
@@ -235,7 +235,7 @@ function drawBarriers(ctx){
   ctx.fillStyle="red";
   for (i=0; i < barrierArray.length; i++){
     ctx.fillRect(barrierArray[i].x, barrierArray[i].y, barrierArray[i].width, barrierArray[i].height);
-
+  }
 }
 
 
@@ -260,7 +260,9 @@ function redrawAliens(ctx, direction){
 function redrawBarriers(ctx){
 	//redraw the barriers based on which ones are left in barrierArray
 }
-
+function redrawMissile(ctx){
+  
+}
 function alienShoot(ctx, aliensLeft){
 	//call the rng function to select a ship
 	//draw a missile moving from that ship towards the bottom
