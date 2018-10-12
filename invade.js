@@ -173,7 +173,7 @@ var canvas = document.getElementById("canvas");
 
   setInterval(alienShoot, 1000, ctx, aliensLeft);
 
-
+  //setInterval(checkCollide, 300, ctx);
 
 
 	if (aliensLeft === 0){
@@ -206,6 +206,8 @@ function update(ctx, direction){
   drawShip(ctx, shipLocation);
   drawLives(ctx);
   drawScore(ctx);
+  checkCollide(ctx);
+  
   return direction;
 }
 
@@ -220,18 +222,19 @@ function checkCollide(ctx){
       //change shipLocation to center
 
       //return type of alien?
+      console.log('a');
       collide = [];
       for (i=0; i < projectileArray.length; i++){
         var type = -1;
-        
+        //console.log(projectileArray[i].x);
         var left = projectileArray[i].x;
-        var right = projectileArray[i].x + projectileArray[i].width;
+        var right = projectileArray[i].x + projectileArray[i].projX;
         var up = projectileArray[i].y;
-        var down = projectileArray[i].y + projectileArray[i].height;
+        var down = projectileArray[i].y + projectileArray[i].projY;
         if (projectileArray[i].player){ //only the player can destroy aliens
           for (x=0; x < alienArray.length; x++){
             if (alienArray[x]){
-              if (left < alienArray[x].column + alienArray[x].width && right > alienArray[x].column && up < alienArray[x].row + alienArray[x].height && down > alienArray[x].row){
+              if (left < alienArray[x].column + alienArray[x].alienX && right > alienArray[x].column && up < alienArray[x].row + alienArray[x].alienY && down > alienArray[x].row){
                 //remove aliens
                 type = alienArray[x].type;
                 alienArray[x] = null;
@@ -246,17 +249,20 @@ function checkCollide(ctx){
         }
         else{ //only aliens can collide with barrier and ship
           for (y=0; y < barrierArray.length; y++){
+
             if (barrierArray[y]){
-              if (left < barrierArray[x].column + barrierArray[x].width && right > barrierArray[x].column && up < barrierArray[x].row + barrierArray[x].height && down > barrierArray[x].row){
+              if (left < barrierArray[y].x + barrierArray[y].width && right > barrierArray[y].x && up < barrierArray[y].y + barrierArray[y].height && down > barrierArray[y].y){
                 //remove barrier
+                //console.log('bar');
                 barrierArray[y] = null;
                 collide.push(i);
                 break;
               }
             }
           }
-          if (left < shipLocation + 25 && right > shipLocation - 25 && up < 525 && down > 500){
+          if (left < shipLocation + 25 && right > shipLocation - 25 && up < 550 && down > 500){
             //reset ship in center
+            console.log('hit');
             shipLocation = 550;
             //decrement lives
             playerLives = playerLives - 1;
@@ -282,8 +288,12 @@ function drawScore(ctx){
   ctx.strokeText(`Score: ${playerScore}`,1050,540);
 }
 function rngShoot(){
-  
-	var x = Math.floor((Math.random() * parseInt(aliensLeft)) + 1);
+  while (true){
+	 var x = Math.floor((Math.random() * parseInt(aliensLeft)) + 1);
+   if (alienArray[x]){
+    break;
+   }
+  }
 	return x;
 }
 
@@ -426,7 +436,7 @@ function alienShoot(ctx, aliensLeft){
   shot.x = shooter.alienX;
   shot.y = shooter.alienY;
   shot.player = false;
-  console.log(shot);
+  //console.log(shot);
   projectileArray.push(shot);
 }
 
