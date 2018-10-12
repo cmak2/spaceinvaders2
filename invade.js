@@ -155,7 +155,7 @@ var canvas = document.getElementById("canvas");
 	var won = false;
 	var aliensLeft = 40; //just starting with 4 rows of 10 for now
 	/*----------------*/
-	alienArray = Array.apply(null, Array(aliensLeft)).map(Number.prototype.valueOf,1); //array to keep track of all aliens (0=dead, 1=alive)
+	//alienArray = Array.apply(null, Array(aliensLeft)).map(Number.prototype.valueOf,1); //array to keep track of all aliens (0=dead, 1=alive)
 
 	//barrierArray = Array.apply(null, Array(12)).map(Number.prototype.valueOf,1); //array to keep track of barriers (0=destroyed, 1=intact)
 
@@ -203,24 +203,42 @@ function checkCollide(ctx){
     //if any part of that projectile overlaps with the shipLocation
       //decrement life
       //change shipLocation to center
-      /*
+
+      //return type of alien?
       for (i=0; i < projectileArray.length; i++){
+        var type = -1;
         var left = projectileArray[i].x;
         var right = projectileArray[i].x + projectileArray[i].width;
         var up = projectileArray[i].y;
         var down = projectileArray[i].y + projectileArray[i].height;
         for (x=0; x < alienArray.length; x++){
-          if (left < alienArray[x].row + alienArray[x].width && )
+          if (alienArray[x]){
+            if (left < alienArray[x].column + alienArray[x].width && right > alienArray[x].column && up < alienArray[x].row + alienArray[x].height && down > alienArray[x].row){
+              //remove aliens
+              type = alienArray[x].type;
+              alienArray[x] = null;
+              
+              //incrementscore///////////
+            }
+          }
         }
         for (y=0; y < barrierArray.length; y++){
-          
+          if (barrierArray[y]){
+            if (left < barrierArray[x].column + barrierArray[x].width && right > barrierArray[x].column && up < barrierArray[x].row + barrierArray[x].height && down > barrierArray[x].row){
+              //remove barrier
+              barrierArray[y] = null;
+            }
+          }
         }
-        if (){
-          
+        if (left < shipLocation + 25 && right > shipLocation - 25 && up < 525 && down > 500){
+          //reset ship in center
+          //decrement lives
         }
     }
-    */
+    return type;
+
 }
+
 function rngShoot(aliensLeft){
 	var x = Math.floor((Math.random() * aliensLeft) + 1);
 	return x;
