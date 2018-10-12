@@ -23,8 +23,8 @@ const alien = {
 const projectile = {
   x: 0,
   y: 0,
-  projX: 50,
-  projY: 50,
+  projX: 10,
+  projY: 10,
   player: true,
   color: "yellow",
 }
@@ -179,6 +179,7 @@ var canvas = document.getElementById("canvas");
 	if (aliensLeft === 0){
 		over = true;
 		won = true;
+    console.log('win');
 	}
 	if (playerLives === 0){
 		over = true;
@@ -193,14 +194,16 @@ var canvas = document.getElementById("canvas");
 
 function update(ctx, direction){
   //redraw aliens, barriers, projectiles, score, and lives
-
+  //clear screen?
   //check collisions
   //update alien positions
   //update projectile positions
   console.log('j');
+  clearScreen();
   direction = redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
   redrawProjectile(ctx);
+  drawShip(ctx, shipLocation);
   drawLives(ctx);
   drawScore(ctx);
   return direction;
@@ -385,15 +388,18 @@ function redrawBarriers(ctx){
   }
 }
 function redrawProjectile(ctx){
-  //console.log(projectileArray);
-  for (i=0; i < projectileArray.length; i++){
+  ctx.fillStyle = "yellow";
+  for (var i = 0; i < projectileArray.length; i++){
+    console.log(i);
+    console.log(projectileArray[i]);
     if (projectileArray[i]){
-      if (projectile[i].player){
+      if (projectileArray[i].player){
         if (projectileArray[i].y < 25){ //removes projectile at top of screen
           projectileArray.splice(i, 1);
         }
         else{
           projectileArray[i].y = projectileArray[i].y - 25;
+          ctx.fillRect(projectileArray[i].x, projectileArray[i].y, projectileArray[i].projX, projectileArray[i].projY);
         }
       }
       else{
@@ -423,7 +429,7 @@ function playerShoot(ctx){
 	//if the missile hits an alien, that alien is destroyed and the playerScore and alienArray should be updated
   p = Object.create(projectile);
   p.x = shipLocation;
-  p.y = 525;
+  p.y = 500;
   p.player = true;
   
   projectileArray.push(p);
