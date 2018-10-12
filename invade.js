@@ -454,9 +454,9 @@ function redrawAliens(ctx, direction){
       ctx.beginPath();
       ctx.fillStyle=nAlien.color;
       ctx.arc(nAlien.alienX, nAlien.alienY, nAlien.radius, 0, 2 * Math.PI, false);
+      ctx.fill();
     }
   }
-  ctx.fill();
   return direction;
 }
 
