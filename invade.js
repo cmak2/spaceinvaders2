@@ -468,44 +468,50 @@ ctx.fill(path);
 
 
 
-function redrawAliens(ctx, direction){
+function redrawAliens(ctx){
   var canvas = document.getElementById("canvas");
+  //console.log("Redraw");
 	//redraw the remaining aliens (use alienArray) having moved over one spot in the given direction
 	//if they reach one edge of the screen, flip the direction and lower them all one level
   var sw = false ;                            //Checks if the direction has changed
   var checkNull = false;
   if (direction == "left") {                  //Iterates through each row first then increments the column checks if the value exists then verifies direction
     var x = 0;
+    //console.log("x");
     do {
       x = x % 10;
       for(y = 0; y < 4; y++){
         var nAlien = alienArray[x + (y * 10)];
         if(nAlien) {                                          //If exists
-          if(nAlien.alienX - 10 < 0) {
+          if(nAlien.alienX - 20 < 0) {
             sw = true;
-            direction == "right";
+            direction = "right";
           }
+          checkNull = true;
         }
       }
       x = x + 1;
       if (x + 30 == 40) {checkNull = true;}                                     //No change necessary
-    } while(sw == false || checkNull);
+    } while(checkNull == false);
   } else if (direction == "right") {
     var x = 9;
+    //console.log("x");
     do {
       if (x < 0) { x = 9; }                                                     //Reset
       for(y = 0; y < 4; y++){
         var nAlien = alienArray[x + (y * 10)];
         if(nAlien) {                                          //If exists
-          if(nAlien.alienX + 10 >= canvas.width) {
+          if(nAlien.alienX + 20 >= canvas.width) {
             sw = true;
-            direction == "left";
+            direction = "left";
           }
+          checkNull = true;
         }
         if (x + (10 * (y + 1)) == 40) { checkNull = true; }
       }
       x = x - 1;
-    } while(sw == false || checkNull);
+      //console.log(x.toString());
+    } while(checkNull == false);
   }
   for(i = 0; i < 40; i++) {                                                     //Iterates through each existing "Alien"
     if (alienArray[i]) {                                                //If the Alien exists in the array
@@ -531,7 +537,7 @@ function redrawAliens(ctx, direction){
       ctx.fill();
     }
   }
-  return direction;
+  return;
 }
 
 function redrawBarriers(ctx){
