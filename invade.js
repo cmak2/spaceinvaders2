@@ -187,11 +187,13 @@ var canvas = document.getElementById("canvas");
 
 }
 
-function update(ctx){
-  redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
+function update(ctx, direction){
+  direction = redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
   redrawMissile(ctx);
+  return direction;
 }
+
 function checkCollide(ctx){
   //for every projectile
     //if any part of that projectile overlaps with an alien
