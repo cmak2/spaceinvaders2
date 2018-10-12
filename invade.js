@@ -171,7 +171,7 @@ var canvas = document.getElementById("canvas");
     //alienShoot(aliensLeft);
 		//most gameplay stuff goes in here
 
-
+  setInterval(alienShoot, 1000, ctx, aliensLeft);
 
 
 
@@ -198,7 +198,7 @@ function update(ctx, direction){
   //check collisions
   //update alien positions
   //update projectile positions
-  console.log('j');
+  
   clearScreen();
   direction = redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
@@ -223,7 +223,7 @@ function checkCollide(ctx){
       collide = [];
       for (i=0; i < projectileArray.length; i++){
         var type = -1;
-        console.log(projectileArray[i].x);
+        
         var left = projectileArray[i].x;
         var right = projectileArray[i].x + projectileArray[i].width;
         var up = projectileArray[i].y;
@@ -347,7 +347,7 @@ function redrawAliens(ctx, direction){
   var canvas = document.getElementById("canvas");
 	//redraw the remaining aliens (use alienArray) having moved over one spot in the given direction
 	//if they reach one edge of the screen, flip the direction and lower them all one level
-  console.log(alienArray)
+  var d;
   for(i = 0; i < 40; i++) {                                                     //Iterates through each existing "Alien"
     if (alienArray[i] != null) {                                                //If the Alien exists in the array
       var nAlien = alienArray[i];                                               //Set nAlien to the currest Alien accessed
@@ -358,6 +358,7 @@ function redrawAliens(ctx, direction){
           nAlien.alienY = nAlien.alienY + 40;
           nAlien.alienX = nAlien.alienX + 10;
           direction = "right";
+          
         }
       } else {
         if(nAlien.alienX + 10 <= canvas.width) {
@@ -366,6 +367,7 @@ function redrawAliens(ctx, direction){
           nAlien.alienX = nAlien.alienX - 10;
           nAlien.alienY = nAlien.alienY + 40;
           direction = "left";
+          
         }
       }
       //alienArray[i] = nAlien;
@@ -393,8 +395,7 @@ function redrawBarriers(ctx){
 function redrawProjectile(ctx){
   ctx.fillStyle = "yellow";
   for (var i = 0; i < projectileArray.length; i++){
-    console.log(i);
-    console.log(projectileArray[i]);
+
     if (projectileArray[i]){
       if (projectileArray[i].player){
         if (projectileArray[i].y < 25){ //removes projectile at top of screen
@@ -406,11 +407,12 @@ function redrawProjectile(ctx){
         }
       }
       else{
-        if (projectileArray[i].y > 525){ //removes projectile at top of screen
+        if (projectileArray[i].y > 525){ //removes projectile at bottom of screen
           projectileArray.splice(i, 1);
         }
         else{
           projectileArray[i].y = projectileArray[i].y + 25;
+          ctx.fillRect(projectileArray[i].x, projectileArray[i].y, projectileArray[i].projX, projectileArray[i].projY);
         }
       }
     }
@@ -421,9 +423,10 @@ function alienShoot(ctx, aliensLeft){
   shooter = alienArray[rngShoot()];
   //draw a missile moving from that ship towards the bottom
   shot = Object.create(projectile);
-  shot.projX = shooter.alienX;
-  shot.projY = shooter.alienY;
+  shot.x = shooter.alienX;
+  shot.y = shooter.alienY;
   shot.player = false;
+  console.log(shot);
   projectileArray.push(shot);
 }
 
