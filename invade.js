@@ -167,7 +167,7 @@ var canvas = document.getElementById("canvas");
 
 	//while (!over){
     //update(ctx);
-  setInterval(update, 2000, ctx);
+  setInterval(update, 300, ctx);
     //alienShoot(aliensLeft);
 		//most gameplay stuff goes in here
 
@@ -299,10 +299,11 @@ function drawAliens(ctx){
 	//initially draw all 40 (can change the number later)
   initial_height = 50;
   initial_width = 50;
-  var nAlien = Object.create(alien);
+  
   for (i=0; i < 4; i++){
     height = initial_height + (i * 50);
     for (y=0; y < 10; y++){
+      var nAlien = Object.create(alien);
       width = initial_width + (y * 80);
       nAlien.alienY = height;
       nAlien.alienX  = width;
@@ -332,8 +333,8 @@ function drawShip(ctx, x){
 	//draw the ship given an x coordinate
 ctx.fillStyle="white";
 var path=new Path2D();
-//ctx.clearRect(shipLocation-25, 500, 50, 25);
-ctx.clearRect(0, 450, 1100, 100);
+ctx.clearRect(shipLocation-35, 500, 70, 25);
+//ctx.clearRect(0, 450, 1100, 100);
 path.moveTo(x-25,525);
 path.lineTo(x+25,525);
 path.lineTo(x,500);
@@ -346,6 +347,7 @@ function redrawAliens(ctx, direction){
   var canvas = document.getElementById("canvas");
 	//redraw the remaining aliens (use alienArray) having moved over one spot in the given direction
 	//if they reach one edge of the screen, flip the direction and lower them all one level
+  console.log(alienArray)
   for(i = 0; i < 40; i++) {                                                     //Iterates through each existing "Alien"
     if (alienArray[i] != null) {                                                //If the Alien exists in the array
       var nAlien = alienArray[i];                                               //Set nAlien to the currest Alien accessed
@@ -366,6 +368,7 @@ function redrawAliens(ctx, direction){
           direction = "left";
         }
       }
+      //alienArray[i] = nAlien;
       if (nAlien.alienY >= 400) {
         direction = "gameover";
       }
