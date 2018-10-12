@@ -23,7 +23,14 @@ var projectile = {
   width: 50,
   height: 50,
   color: "yellow",
-}
+};
+const barrier = {
+  x: 0,
+  y: 400,
+  width: 45,
+  height: 25,
+  color:"red"
+};
 /*
   Array Properties
   length        - returns length of the array
@@ -120,8 +127,20 @@ function gameOver(gameWon, playerScore){
 /*Gameplay*/
 
 function playGame(){
-	var canvas = document.getElementById("canvas");
+var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
+  var bx = 100;
+  for (b=0; b < 12; b++){
+    var bar = Object.create(barrier);
+    bar.x = bx;
+    barrierArray.push(bar);
+    if (b === 2 || b === 5 || b === 8 || b === 11){
+      bx = bx + 150;
+    }
+    else{
+      bx = bx + 50;
+    }
+  }
   shipLocation = 550;
   //var numLives = 3;
 	drawCanvas(ctx);	//Draws background
@@ -136,14 +155,15 @@ function playGame(){
 	var aliensLeft = 40; //just starting with 4 rows of 10 for now
 	/*----------------*/
 	alienArray = Array.apply(null, Array(aliensLeft)).map(Number.prototype.valueOf,1); //array to keep track of all aliens (0=dead, 1=alive)
-	barrierArray = Array.apply(null, Array(16)).map(Number.prototype.valueOf,1); //array to keep track of barriers (0=destroyed, 1=intact)
+
+	//barrierArray = Array.apply(null, Array(12)).map(Number.prototype.valueOf,1); //array to keep track of barriers (0=destroyed, 1=intact)
+
 	//shipLocation = ___    starting ship location
 
 	while (!over){
+    update(ctx);
 
-		redrawAliens(aliensLeft, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
-		alienShoot(aliensLeft);
-
+    alienShoot(aliensLeft);
 		//most gameplay stuff goes in here
 
 
@@ -163,6 +183,13 @@ function playGame(){
 	clearScreen();
 	gameOver(won, playerScore);
 
+
+}
+
+function update(ctx){
+  redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
+  redrawBarriers(ctx);
+  redrawMissile(ctx);
 }
 
 function rngShoot(aliensLeft){
@@ -204,27 +231,10 @@ function drawAliens(ctx){
 }
 
 function drawBarriers(ctx){
-	//initially draw all 4 (each made of 4 small barriers) completely
-	//Barriers are boxes.
-  ctx.fillStyle = "red";
-  ctx.fillRect(100,400, 45, 25);
-  ctx.fillRect(150,400, 45, 25);
-  ctx.fillRect(200,400, 45, 25);
 
-
-  ctx.fillRect(350,400, 45, 25);
-  ctx.fillRect(400,400, 45, 25);
-  ctx.fillRect(450,400, 50, 25);
-
-  ctx.fillRect(600,400, 45, 25);
-  ctx.fillRect(650,400, 45, 25);
-  ctx.fillRect(700,400, 45, 25);
-
-  ctx.fillRect(850,400, 45, 25);
-  ctx.fillRect(900,400, 45, 25);
-  ctx.fillRect(950,400, 45, 25);
-
-  //add to array?
+  ctx.fillStyle="red";
+  for (i=0; i < barrierArray.length; i++){
+    ctx.fillRect(barrierArray[i].x, barrierArray[i].y, barrierArray[i].width, barrierArray[i].height);
 
 }
 
