@@ -399,11 +399,81 @@ ctx.fill(path);
 
 
 
+function drawAliens(ctx){
+	//initially draw all 40 (can change the number later)
+  initial_height = 50;
+  initial_width = 50;
+
+  for (i=0; i < 4; i++){
+    height = initial_height + (i * 50);
+    for (y=0; y < 10; y++){
+      var nAlien = Object.create(alien);
+      width = initial_width + (y * 80);
+      nAlien.alienY = height;
+      nAlien.alienX  = width;
+      nAlien.row = i;
+      nAlien.column = y;
+      nAlien.type = i + 1;
+      if (i == 0 && y == 4) nAlien.type = 0; //captain
+      switch(nAlien.type) {
+        case 0:
+          nAlien.color = "blue";
+          break;
+        case 1:
+          nAlien.color = "red";
+          break;
+        case 2:
+          nAlien.color = "orange";
+          break;
+        case 3:
+          nAlien.color = "purple";
+          break;
+        //case 4:
+        default:
+          nAlien.color = "green";
+          break;
+      }
+      ctx.fillStyle = nAlien.color;
+      //ctx.fillCircle(width,height, 25, 25);
+      ctx.beginPath();
+      ctx.arc(width, height, nAlien.radius, 0, 2 * Math.PI, false);
+      ctx.fill();
+      alienArray.push(nAlien);
+    }
+  }
+
+}
+
+function drawBarriers(ctx){
+
+  ctx.fillStyle="red";
+  for (i=0; i < barrierArray.length; i++){
+    ctx.fillRect(barrierArray[i].x, barrierArray[i].y, barrierArray[i].width, barrierArray[i].height);
+  }
+}
+
+
+function drawShip(ctx, x){
+	//draw the ship given an x coordinate
+ctx.fillStyle="white";
+var path=new Path2D();
+ctx.clearRect(shipLocation-35, 500, 70, 25);
+//ctx.clearRect(0, 450, 1100, 100);
+path.moveTo(x-25,525);
+path.lineTo(x+25,525);
+path.lineTo(x,500);
+ctx.fill(path);
+}
+
+
+
+
 function redrawAliens(ctx, direction){
   var canvas = document.getElementById("canvas");
 	//redraw the remaining aliens (use alienArray) having moved over one spot in the given direction
 	//if they reach one edge of the screen, flip the direction and lower them all one level
   var sw = false ;                            //Checks if the direction has changed
+  var checkNull = false;
   if (direction == "left") {                  //Iterates through each row first then increments the column checks if the value exists then verifies direction
     var x = 0;
     do {
@@ -417,7 +487,8 @@ function redrawAliens(ctx, direction){
         }
       }
       x = x + 1;
-    } while(sw == false || x + 30 == 40);
+      if (x + 30 == 40) {checkNull = true;}                                     //No change necessary
+    } while(sw == false || checkNull);
   } else if (direction == "right") {
     var x = 9;
     do {
@@ -429,9 +500,10 @@ function redrawAliens(ctx, direction){
             direction == "left";
           }
         }
+        if (x + (10 * (y + 1)) == 40) { checkNull = true; }
       }
       x = x - 1;
-    } while(sw == false || (x + 40) == 40);
+    } while(sw == false || checkNull);
   }
   for(i = 0; i < 40; i++) {                                                     //Iterates through each existing "Alien"
     if (alienArray[i]) {                                                //If the Alien exists in the array
