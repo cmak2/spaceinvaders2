@@ -8,10 +8,11 @@ var shipLocation = 0;
 
 
 var alien = {
-  x: 0,
-  y: 0,
+  row: 0,
+  column: 0,
   width: 50,
   height: 50,
+  radius: 20,
   color: "green",
   type: 1,
 };
@@ -187,11 +188,16 @@ function drawAliens(ctx){
     height = initial_height + (i * 50);
     for (y=0; y < 10; y++){
       width = initial_width + (y * 80);
+      nAlien.height = height;
+      nAlien.width  = width;
+      nAlien.row = i;
+      nAlien.column = j;
       ctx.fillStyle = "green";
       //ctx.fillCircle(width,height, 25, 25);
       ctx.beginPath();
-      ctx.arc(width, height, 20, 0, 2 * Math.PI, false);
+      ctx.arc(width, height, nAlien.radius, 0, 2 * Math.PI, false);
       ctx.fill();
+      alienArray.push(nAlien);
     }
   }
 
