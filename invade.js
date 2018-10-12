@@ -367,5 +367,11 @@ function dealWithKeyboard(event){
 }
 /*-------------------------------*/
 
+function incrementScore(score) {
+  //Increments playerScore
+  //Adjusts High Score if necessary
+  playerScore = playerScore + score;
+
+}
 
 //need to change array to hold alien x and y position instead of 0/1, negative 1 vals can signify the alien is dead
