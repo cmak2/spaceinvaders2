@@ -227,9 +227,10 @@ function dealWithKeyboard(event){
 	if (event.keyCode == 37){
 		//left
     if (shipLocation > 100){
-    shipLocation = shipLocation - 50;
+   	shipLocation = shipLocation - 50;
+	drawShip(ctx, shipLocation);
     }
-    drawShip(ctx, shipLocation);
+    
 		//redraw ship and update loacation variables
 	}
 	else if (event.keyCode == 39){
