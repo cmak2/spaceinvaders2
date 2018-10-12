@@ -8,6 +8,9 @@ var projectileArray = [];
 var shipLocation = 0;
 var playerLives = 3;
 var aliensLeft = 40;
+var upd = 0;
+var ast = 0;
+var win = false;
 
 
 const alien = {
@@ -106,10 +109,17 @@ function clearScreen(){
 	const context = canvas.getContext('2d');
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
+function callbackClear(callback){
+  var canvas = document.getElementById("canvas");
+  const context = canvas.getContext('2d');
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  callback();
+}
 
 
-function gameOver(gameWon, playerScore){
+function gameOver(){
 	//$("#canvas").fillText("Hello",10,50).css("color", "white");
+  var gameWon = win;
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
 	ctx.font = "8em Impact";
@@ -167,22 +177,22 @@ var canvas = document.getElementById("canvas");
 
 	//while (!over){
     //update(ctx);
-  setInterval(update, 300, ctx);
+  upd = setInterval(update, 300, ctx);
     //alienShoot(aliensLeft);
 		//most gameplay stuff goes in here
 
-  setInterval(alienShoot, 1000, ctx, aliensLeft);
+  ast = setInterval(alienShoot, 1000, ctx, aliensLeft);
 
   //setInterval(checkCollide, 300, ctx);
-
 
 	if (aliensLeft === 0){
 		over = true;
 		won = true;
     console.log('win');
 	}
-	if (playerLives === 0){
+	if (playerLives == 0){
 		over = true;
+    console.log('lose');
 	}
 
 
@@ -207,7 +217,22 @@ function update(ctx, direction){
   drawLives(ctx);
   drawScore(ctx);
   checkCollide(ctx);
-  
+  if (playerLives == 0){
+    win = false;
+    clearInterval(upd);
+    clearInterval(ast)
+    console.log('lose');
+    callbackClear(gameOver);
+    //gameOver(won, playerScore);
+  }
+  if (aliensLeft == 0){
+    win = true;
+    clearInterval(upd);
+    clearInterval(ast)
+    console.log('win');
+    callbackClear(gameOver);
+    //gameOver(won, playerScore);
+  }
   return direction;
 }
 
@@ -403,10 +428,11 @@ function redrawBarriers(ctx){
   }
 }
 function redrawProjectile(ctx){
-  ctx.fillStyle = "yellow";
+  
   for (var i = 0; i < projectileArray.length; i++){
 
     if (projectileArray[i]){
+      ctx.fillStyle = projectileArray[i].color;
       if (projectileArray[i].player){
         if (projectileArray[i].y < 25){ //removes projectile at top of screen
           projectileArray.splice(i, 1);
@@ -447,6 +473,7 @@ function playerShoot(ctx){
   p.x = shipLocation;
   p.y = 500;
   p.player = true;
+  p.color = "pink";
   
   projectileArray.push(p);
 }
