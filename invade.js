@@ -4,28 +4,28 @@ var direction = 'right';
 var playerScore = 0;
 var alienArray = [];
 var barrierArray = [];
+var shipLocation = 0;
 
 
 var alien = {
   x: 0,
   y: 0,
+  width: 50,
+  height: 50,
   color: "green",
   type: 1,
-  getX: function() { return this.x;},
-  getY: function() { return this.y;}
 };
 
 var projectile = {
   x: 0,
   y: 0,
+  width: 50,
+  height: 50,
   color: "yellow",
-  getX: function() {return this.x;},
-  getY: function() {return this.y;}
 }
 /*
   Array Properties
   length        - returns length of the array
-
   Array Methods
   concat()      - Joins 2 or more arrayd and returns a copy of the joined arrays
   copyWithin()  - copies array elements within the array to and from specified positions
@@ -41,7 +41,6 @@ var projectile = {
   push()        - Adds new elements to the end of an array and returns the new length.
   shift()       - Removes the first element of an array and returns that element.
   unshift()     - Adds new elements to the beginning of an array and returns the new length.
-
 */
 /*---------------*/
 
@@ -183,6 +182,7 @@ function drawAliens(ctx){
 	//initially draw all 40 (can change the number later)
   initial_height = 50;
   initial_width = 50;
+  var nAlien = Object.create(alien);
   for (i=0; i < 4; i++){
     height = initial_height + (i * 50);
     for (y=0; y < 10; y++){
@@ -268,7 +268,7 @@ function dealWithKeyboard(event){
    	shipLocation = shipLocation - 50;
 	drawShip(ctx, shipLocation);
     }
-    
+
 		//redraw ship and update loacation variables
 	}
 	else if (event.keyCode == 39){
