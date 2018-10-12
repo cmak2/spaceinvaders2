@@ -7,6 +7,7 @@ var barrierArray = [];
 var projectileArray = [];
 var shipLocation = 0;
 var playerLives = 3;
+var aliensLeft = 40;
 
 
 const alien = {
@@ -101,6 +102,7 @@ function titlescreen(){
 
 
 function clearScreen(){
+  var canvas = document.getElementById("canvas");
 	const context = canvas.getContext('2d');
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -155,7 +157,7 @@ var canvas = document.getElementById("canvas");
 	/*in game variables*/
 	var over = false;
 	var won = false;
-	var aliensLeft = 40; //just starting with 4 rows of 10 for now
+	 //just starting with 4 rows of 10 for now
 	/*----------------*/
 	//alienArray = Array.apply(null, Array(aliensLeft)).map(Number.prototype.valueOf,1); //array to keep track of all aliens (0=dead, 1=alive)
 
@@ -163,10 +165,10 @@ var canvas = document.getElementById("canvas");
 
 	//shipLocation = ___    starting ship location
 
-	while (!over){
-    update(ctx);
-
-    alienShoot(aliensLeft);
+	//while (!over){
+    //update(ctx);
+  setInterval(update, 2000, ctx);
+    //alienShoot(aliensLeft);
 		//most gameplay stuff goes in here
 
 
@@ -174,23 +176,28 @@ var canvas = document.getElementById("canvas");
 
 
 
-		if (aliensLeft === 0){
-			over = true;
-			won = true;
-		}
-		if (numLives === 0){
-			over = true;
-		}
+	if (aliensLeft === 0){
+		over = true;
+		won = true;
+	}
+	if (playerLives === 0){
+		over = true;
 	}
 
-	clearScreen();
-	gameOver(won, playerScore);
+
+	//clearScreen();
+	//gameOver(won, playerScore);
 
 
 }
 
 function update(ctx, direction){
   //redraw aliens, barriers, projectiles, score, and lives
+
+  //check collisions
+  //update alien positions
+  //update projectile positions
+  console.log('j');
   direction = redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
   redrawProjectile(ctx);
@@ -210,8 +217,10 @@ function checkCollide(ctx){
       //change shipLocation to center
 
       //return type of alien?
+      collide = [];
       for (i=0; i < projectileArray.length; i++){
         var type = -1;
+        console.log(projectileArray[i].x);
         var left = projectileArray[i].x;
         var right = projectileArray[i].x + projectileArray[i].width;
         var up = projectileArray[i].y;
@@ -223,6 +232,9 @@ function checkCollide(ctx){
                 //remove aliens
                 type = alienArray[x].type;
                 alienArray[x] = null;
+                aliensLeft = aliensLeft - 1;
+                collide.push(i);
+                break;
                 
                 //incrementscore///////////
               }
@@ -235,14 +247,23 @@ function checkCollide(ctx){
               if (left < barrierArray[x].column + barrierArray[x].width && right > barrierArray[x].column && up < barrierArray[x].row + barrierArray[x].height && down > barrierArray[x].row){
                 //remove barrier
                 barrierArray[y] = null;
+                collide.push(i);
+                break;
               }
             }
           }
           if (left < shipLocation + 25 && right > shipLocation - 25 && up < 525 && down > 500){
             //reset ship in center
+            shipLocation = 550;
             //decrement lives
+            playerLives = playerLives - 1;
+            
+            collide.push(i);
           }
         }
+    }
+    for(p=0; p < collide.length; p++){
+      projectileArray.splice(collide[p], 1);
     }
     return type;
 
@@ -257,8 +278,9 @@ function drawScore(ctx){
   ctx.font = "1em Impact";
   ctx.strokeText(`Score: ${playerScore}`,1050,540);
 }
-function rngShoot(aliensLeft){
-	var x = Math.floor((Math.random() * aliensLeft) + 1);
+function rngShoot(){
+  
+	var x = Math.floor((Math.random() * parseInt(aliensLeft)) + 1);
 	return x;
 }
 
@@ -363,32 +385,35 @@ function redrawBarriers(ctx){
   }
 }
 function redrawProjectile(ctx){
+  //console.log(projectileArray);
   for (i=0; i < projectileArray.length; i++){
-    if (projectile[i].player){
-      if (projectileArray[i].y < 25){ //removes projectile at top of screen
-        projectileArray.splice(i, 1);
+    if (projectileArray[i]){
+      if (projectile[i].player){
+        if (projectileArray[i].y < 25){ //removes projectile at top of screen
+          projectileArray.splice(i, 1);
+        }
+        else{
+          projectileArray[i].y = projectileArray[i].y - 25;
+        }
       }
       else{
-        projectileArray[i].y = projectileArray[i].y - 25;
-      }
-    }
-    else{
-      if (projectileArray[i].y > 525){ //removes projectile at top of screen
-        projectileArray.splice(i, 1);
-      }
-      else{
-        projectileArray[i].y = projectileArray[i].y + 25;
+        if (projectileArray[i].y > 525){ //removes projectile at top of screen
+          projectileArray.splice(i, 1);
+        }
+        else{
+          projectileArray[i].y = projectileArray[i].y + 25;
+        }
       }
     }
   }
 }
 function alienShoot(ctx, aliensLeft){
   //call the rng function to select a ship
-  shooter = alienArray[rngShoot(aliensLeft)];
+  shooter = alienArray[rngShoot()];
   //draw a missile moving from that ship towards the bottom
   shot = Object.create(projectile);
   shot.projX = shooter.alienX;
-  shot.projY = shooter.projY;
+  shot.projY = shooter.alienY;
   shot.player = false;
   projectileArray.push(shot);
 }
@@ -400,7 +425,7 @@ function playerShoot(ctx){
   p.x = shipLocation;
   p.y = 525;
   p.player = true;
-  console.log(p);
+  
   projectileArray.push(p);
 }
 
