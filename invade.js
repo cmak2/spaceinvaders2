@@ -4,45 +4,7 @@ var direction = 'right';
 var playerScore = 0;
 var alienArray = [];
 var barrierArray = [];
-var shipLocation = 0;
 
-var alien = {
-  x: 0,
-  y: 0,
-  color: "green",
-  type: 1,
-  getX: function() { return this.x;},
-  getY: function() { return this.y;}
-};
-
-var projectile = {
-  x: 0,
-  y: 0,
-  color: "yellow",
-  getX: function() {return this.x;},
-  getY: function() {return this.y;}
-}
-/*
-  Array Properties
-  length        - returns length of the array
-
-  Array Methods
-  concat()      - Joins 2 or more arrayd and returns a copy of the joined arrays
-  copyWithin()  - copies array elements within the array to and from specified positions
-  entries()     - returns a key/value pair Array Iteration Object
-  every()       - Checks if every element in an array passes a test
-  fill()        - Fill the elements in an array with a static value
-  filter()      - Creates a new array with every element in an array that pass a test
-  find()        - Returns value of the first elmeent in an array to that passes a test
-  findIndex()   - Returns index of the firs element in an array that passes a test
-  forEach()     - Calls a function for eacharray elements
-  from()        - Creates an array from an Object
-  pop()         - Removes the last element of an array, and returns the element.
-  push()        - Adds new elements to the end of an array and returns the new length.
-  shift()       - Removes the first element of an array and returns that element.
-  unshift()     - Adds new elements to the beginning of an array and returns the new length.
-
-*/
 /*---------------*/
 
 
@@ -122,10 +84,12 @@ function gameOver(gameWon, playerScore){
 function playGame(){
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
+  shipLocation = 550;
+  //var numLives = 3;
 	drawCanvas(ctx);	//Draws background
 	drawAliens(ctx);
 	drawBarriers(ctx); //4 barriers
-	drawShip(ctx);
+	drawShip(ctx, shipLocation);
 	//keyboard listener for ship movement and firing
 
 	/*in game variables*/
@@ -179,17 +143,58 @@ function drawCanvas(ctx) {
 
 function drawAliens(ctx){
 	//initially draw all 40 (can change the number later)
+  initial_height = 50;
+  initial_width = 50;
+  for (i=0; i < 4; i++){
+    height = initial_height + (i * 50);
+    for (y=0; y < 10; y++){
+      width = initial_width + (y * 80);
+      ctx.fillStyle = "green";
+      //ctx.fillCircle(width,height, 25, 25);
+      ctx.beginPath();
+      ctx.arc(width, height, 20, 0, 2 * Math.PI, false);
+      ctx.fill();
+    }
+  }
 
 }
 
 function drawBarriers(ctx){
 	//initially draw all 4 (each made of 4 small barriers) completely
 	//Barriers are boxes.
+  ctx.fillStyle = "red";
+  ctx.fillRect(100,400, 45, 25);
+  ctx.fillRect(150,400, 45, 25);
+  ctx.fillRect(200,400, 45, 25);
+
+
+  ctx.fillRect(350,400, 45, 25);
+  ctx.fillRect(400,400, 45, 25);
+  ctx.fillRect(450,400, 50, 25);
+
+  ctx.fillRect(600,400, 45, 25);
+  ctx.fillRect(650,400, 45, 25);
+  ctx.fillRect(700,400, 45, 25);
+
+  ctx.fillRect(850,400, 45, 25);
+  ctx.fillRect(900,400, 45, 25);
+  ctx.fillRect(950,400, 45, 25);
+
+  //add to array?
+
 }
 
 
 function drawShip(ctx, x){
 	//draw the ship given an x coordinate
+ctx.fillStyle="white";
+var path=new Path2D();
+//ctx.clearRect(shipLocation-25, 500, 50, 25);
+ctx.clearRect(0, 450, 1100, 100);
+path.moveTo(x-25,525);
+path.lineTo(x+25,525);
+path.lineTo(x,500);
+ctx.fill(path);
 }
 
 
@@ -217,15 +222,27 @@ function playerShoot(ctx){
 
 
 function dealWithKeyboard(event){
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
 	if (event.keyCode == 37){
 		//left
+    if (shipLocation > 100){
+    shipLocation = shipLocation - 50;
+    }
+    drawShip(ctx, shipLocation);
 		//redraw ship and update loacation variables
 	}
 	else if (event.keyCode == 39){
 		//redraw ship and update loacation variables
 		//right
+    if (shipLocation < 1000){
+    shipLocation = shipLocation + 50;
+    drawShip(ctx, shipLocation);
+    }
 	}
-	else if (event.keyCode == 32)
+	else if (event.keyCode == 32){
+
+  }
 		//space
 		//shoot and register hit/miss based on alien locations and update score, alienArray and aliensLeft
 }
