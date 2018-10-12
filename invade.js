@@ -479,7 +479,8 @@ function redrawAliens(ctx, direction){
     do {
       x = x % 10;
       for(y = 0; y < 4; y++){
-        if(alienArray[x + (y * 10)]) {                                          //If exists
+        var nAlien = alienArray[x + (y * 10)];
+        if(nAlien) {                                          //If exists
           if(nAlien.alienX - 10 < 0) {
             sw = true;
             direction == "right";
@@ -494,7 +495,8 @@ function redrawAliens(ctx, direction){
     do {
       if (x < 0) { x = 9; }                                                     //Reset
       for(y = 0; y < 4; y++){
-        if(alienArray[x + (y * 10)]) {                                          //If exists
+        var nAlien = alienArray[x + (y * 10)];
+        if(nAlien) {                                          //If exists
           if(nAlien.alienX + 10 >= canvas.width) {
             sw = true;
             direction == "left";
