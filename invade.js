@@ -7,23 +7,23 @@ var barrierArray = [];
 var shipLocation = 0;
 
 
-var alien = {
+const alien = {
   row: 0,
   column: 0,
-  width: 50,
-  height: 50,
+  alienX: 50,
+  alienY: 50,
   radius: 20,
   color: "green",
   type: 1,
 };
 
-var projectile = {
+const projectile = {
   x: 0,
   y: 0,
-  width: 50,
-  height: 50,
+  projX: 50,
+  projY: 50,
   color: "yellow",
-};
+}
 const barrier = {
   x: 0,
   y: 400,
@@ -206,28 +206,23 @@ function drawCanvas(ctx) {
 	ctx.fillRect(0,0, width, height);
 }
 
-function drawAliens(ctx){
-	//initially draw all 40 (can change the number later)
-  initial_height = 50;
-  initial_width = 50;
-  var nAlien = Object.create(alien);
-  for (i=0; i < 4; i++){
-    height = initial_height + (i * 50);
-    for (y=0; y < 10; y++){
-      width = initial_width + (y * 80);
-      nAlien.height = height;
-      nAlien.width  = width;
-      nAlien.row = i;
-      nAlien.column = y;
-      ctx.fillStyle = "green";
-      //ctx.fillCircle(width,height, 25, 25);
-      ctx.beginPath();
-      ctx.arc(width, height, nAlien.radius, 0, 2 * Math.PI, false);
-      ctx.fill();
-      alienArray.push(nAlien);
+function redrawAliens(ctx, direction){
+	//redraw the remaining aliens (use alienArray) having moved over one spot in the given direction
+	//if they reach one edge of the screen, flip the direction and lower them all one level
+  for(i = 0; i < 40; i++) {
+    if (alienArray[i] != null) {
+      var nAlien = alienArray[i];
+      if (direction == "left") {
+        if (nAlien.width - 10 >= 0) {
+          nAlien.alienX = nAlien.alienX - 10;
+        } else {
+          nAlien.alienY = nAlien.alienY + 40;
+          nAlien.alienX = nAlien.alienX + 10;
+          direction = "right";
+        }
+      }
     }
   }
-
 }
 
 function drawBarriers(ctx){
