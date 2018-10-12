@@ -319,7 +319,27 @@ function drawAliens(ctx){
       nAlien.alienX  = width;
       nAlien.row = i;
       nAlien.column = y;
-      ctx.fillStyle = "green";
+      nAlien.type = i + 1;
+      if (i == 0 && y == 4) nAlien.type = 0; //captain
+      switch(nAlien.type) {
+        case 0:
+          nAlien.color = "blue";
+          break;
+        case 1:
+          nAlien.color = "red";
+          break;
+        case 2:
+          nAlien.color = "orange";
+          break;
+        case 3:
+          nAlien.color = "purple";
+          break;
+        //case 4:
+        default:
+          nAlien.color = "green";
+          break;
+      }
+      ctx.fillStyle = nAlien.color;
       //ctx.fillCircle(width,height, 25, 25);
       ctx.beginPath();
       ctx.arc(width, height, nAlien.radius, 0, 2 * Math.PI, false);
@@ -385,7 +405,7 @@ function redrawAliens(ctx, direction){
         direction = "gameover";
       }
       ctx.beginPath();
-      ctx.fillStyle="green";
+      ctx.fillStyle=nAlien.color;
       ctx.arc(nAlien.alienX, nAlien.alienY, nAlien.radius, 0, 2 * Math.PI, false);
       ctx.fill();
     }
