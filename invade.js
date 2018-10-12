@@ -51,6 +51,7 @@ function titlescreen(){
     ctx.strokeText("PLAY",550,380);
 }
 
+
 function clearScreen(){
 	const context = canvas.getContext('2d');
 	context.clearRect(0, 0, canvas.width, canvas.height);
@@ -83,6 +84,7 @@ function gameOver(gameWon, playerScore){
 function playGame(){
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
+	drawCanvas(ctx);	//Draws background
 	drawAliens(ctx);
 	drawBarriers(ctx); //4 barriers
 	drawShip(ctx);
@@ -128,12 +130,23 @@ function rngShoot(aliensLeft){
 	return x;
 }
 
+function drawCanvas(ctx) {
+	//Draws background.
+	var canvas = document.getElementById("canvas");
+	var width = canvas.width;
+	var height = canvas.height;
+	ctx.fillStyle = "#000000";
+	ctx.fillRect(0,0, width, height);
+}
+
 function drawAliens(ctx){
 	//initially draw all 40 (can change the number later)
+	
 }
 
 function drawBarriers(ctx){
 	//initially draw all 4 (each made of 4 small barriers) completely
+	//Barriers are boxes.
 }
 
 
