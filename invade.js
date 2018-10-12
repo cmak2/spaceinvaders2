@@ -5,6 +5,44 @@ var playerScore = 0;
 var alienArray = [];
 var barrierArray = [];
 var shipLocation = 0;
+
+var alien = {
+  x: 0,
+  y: 0,
+  color: "green",
+  type: 1,
+  getX: function() { return this.x;},
+  getY: function() { return this.y;}
+};
+
+var projectile = {
+  x: 0,
+  y: 0,
+  color: "yellow",
+  getX: function() {return this.x;},
+  getY: function() {return this.y;}
+}
+/*
+  Array Properties
+  length        - returns length of the array
+
+  Array Methods
+  concat()      - Joins 2 or more arrayd and returns a copy of the joined arrays
+  copyWithin()  - copies array elements within the array to and from specified positions
+  entries()     - returns a key/value pair Array Iteration Object
+  every()       - Checks if every element in an array passes a test
+  fill()        - Fill the elements in an array with a static value
+  filter()      - Creates a new array with every element in an array that pass a test
+  find()        - Returns value of the first elmeent in an array to that passes a test
+  findIndex()   - Returns index of the firs element in an array that passes a test
+  forEach()     - Calls a function for eacharray elements
+  from()        - Creates an array from an Object
+  pop()         - Removes the last element of an array, and returns the element.
+  push()        - Adds new elements to the end of an array and returns the new length.
+  shift()       - Removes the first element of an array and returns that element.
+  unshift()     - Adds new elements to the beginning of an array and returns the new length.
+
+*/
 /*---------------*/
 
 
@@ -40,13 +78,13 @@ function titlescreen(){
 	var ctx = canvas.getContext("2d");
 	ctx.font = "8em Impact";
 	ctx.strokeStyle="#FF69B4";
-	ctx.textAlign = "center"; 
+	ctx.textAlign = "center";
 	ctx.strokeText("Space Invaders II",550,120);
 
 	ctx.beginPath();
     ctx.strokeStyle = '#39ff14';
     ctx.strokeRect(450,300,200,100);
-    ctx.fill(); 
+    ctx.fill();
     ctx.font = "5em Impact";
     ctx.strokeText("PLAY",550,380);
 }
@@ -71,7 +109,7 @@ function gameOver(gameWon, playerScore){
 		ctx.strokeStyle="red";
 		ctx.strokeText("You Lost",550,300);
 	}
-	ctx.textAlign = "center"; 
+	ctx.textAlign = "center";
 	ctx.strokeText("Game Over",550,120);
 	ctx.strokeStyle="white";
 	ctx.strokeText(`Your Score: ${playerScore}`,550,450);
@@ -113,7 +151,7 @@ function playGame(){
 
 		if (aliensLeft === 0){
 			over = true;
-			won = true;	
+			won = true;
 		}
 		if (numLives === 0){
 			over = true;
@@ -122,7 +160,7 @@ function playGame(){
 
 	clearScreen();
 	gameOver(won, playerScore);
-	
+
 }
 
 function rngShoot(aliensLeft){
@@ -141,7 +179,7 @@ function drawCanvas(ctx) {
 
 function drawAliens(ctx){
 	//initially draw all 40 (can change the number later)
-	
+
 }
 
 function drawBarriers(ctx){
