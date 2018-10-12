@@ -398,31 +398,53 @@ ctx.fill(path);
 
 
 
+
 function redrawAliens(ctx, direction){
   var canvas = document.getElementById("canvas");
 	//redraw the remaining aliens (use alienArray) having moved over one spot in the given direction
 	//if they reach one edge of the screen, flip the direction and lower them all one level
-  var d;
+  var sw = false ;                            //Checks if the direction has changed
+  if (direction == "left") {                  //Iterates through each row first then increments the column checks if the value exists then verifies direction
+    var x = 0;
+    do {
+      x = x % 10;
+      for(y = 0; y < 4; y++){
+        if(alienArray[x + (y * 10)]) {                                          //If exists
+          if(nAlien.alienX - 10 < 0) {
+            sw = true;
+            direction == "right";
+          }
+        }
+      }
+      x = x + 1;
+    } while(sw == false || x + 30 == 40);
+  } else if (direction == "right") {
+    var x = 9;
+    do {
+      if (x < 0) { x = 9; }                                                     //Reset
+      for(y = 0; y < 4; y++){
+        if(alienArray[x + (y * 10)]) {                                          //If exists
+          if(nAlien.alienX + 10 >= canvas.width) {
+            sw = true;
+            direction == "left";
+          }
+        }
+      }
+      x = x - 1;
+    } while(sw == false || (x + 40) == 40);
+  }
   for(i = 0; i < 40; i++) {                                                     //Iterates through each existing "Alien"
-    if (alienArray[i] != null) {                                                //If the Alien exists in the array
+    if (alienArray[i]) {                                                //If the Alien exists in the array
       var nAlien = alienArray[i];                                               //Set nAlien to the currest Alien accessed
       if (direction == "left") {                                                //If Aliens are moving left
-        if (nAlien.alienX - 10 >= 0) {                                          //Check the barrier
-          nAlien.alienX = nAlien.alienX - 10;
-        } else {
+        nAlien.alienX = nAlien.alienX - 10;
+        if (sw) {
           nAlien.alienY = nAlien.alienY + 40;
-          nAlien.alienX = nAlien.alienX + 10;
-          direction = "right";
-          
         }
       } else {
-        if(nAlien.alienX + 10 <= canvas.width) {
           nAlien.alienX = nAlien.alienX + 10;
-        } else {
-          nAlien.alienX = nAlien.alienX - 10;
+        if (sw) {
           nAlien.alienY = nAlien.alienY + 40;
-          direction = "left";
-          
         }
       }
       //alienArray[i] = nAlien;
@@ -432,9 +454,9 @@ function redrawAliens(ctx, direction){
       ctx.beginPath();
       ctx.fillStyle=nAlien.color;
       ctx.arc(nAlien.alienX, nAlien.alienY, nAlien.radius, 0, 2 * Math.PI, false);
-      ctx.fill();
     }
   }
+  ctx.fill();
   return direction;
 }
 
