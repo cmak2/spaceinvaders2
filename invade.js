@@ -280,22 +280,38 @@ ctx.fill(path);
 
 
 function redrawAliens(ctx, direction){
+  var canvas = document.getElementById("canvas");
 	//redraw the remaining aliens (use alienArray) having moved over one spot in the given direction
 	//if they reach one edge of the screen, flip the direction and lower them all one level
-  for(i = 0; i < 40; i++) {
-    if (alienArray[i] != null) {
-      var nAlien = alienArray[i];
-      if (direction == "left") {
-        if (nAlien.width - 10 >= 0) {
+  for(i = 0; i < 40; i++) {                                                     //Iterates through each existing "Alien"
+    if (alienArray[i] != null) {                                                //If the Alien exists in the array
+      var nAlien = alienArray[i];                                               //Set nAlien to the currest Alien accessed
+      if (direction == "left") {                                                //If Aliens are moving left
+        if (nAlien.alienX - 10 >= 0) {                                          //Check the barrier
           nAlien.alienX = nAlien.alienX - 10;
         } else {
           nAlien.alienY = nAlien.alienY + 40;
           nAlien.alienX = nAlien.alienX + 10;
           direction = "right";
         }
+      } else {
+        if(nAlien.alienX + 10 <= canvas.width) {
+          nAlien.alienX = nAlien.alienX + 10;
+        } else {
+          nAlien.alienX = nAlien.alienX - 10;
+          nAlien.alienY = nAlien.alienY + 40;
+          direction = "left";
+        }
       }
+      if (nAlien.alienY >= 400) {
+        direction = "gameover";
+      }
+      ctx.beginPath();
+      ctx.arc(nAlien.alienX, nAlien.alienY, nAlien.radius, 0, 2 * Math.PI, false);
+      ctx.fill();
     }
   }
+  return direction;
 }
 
 function redrawBarriers(ctx){
