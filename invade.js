@@ -4,6 +4,7 @@ var direction = 'right';
 var playerScore = 0;
 var alienArray = [];
 var barrierArray = [];
+var projectileArray = [];
 var shipLocation = 0;
 
 
@@ -191,7 +192,33 @@ function update(ctx){
   redrawBarriers(ctx);
   redrawMissile(ctx);
 }
-
+function checkCollide(ctx){
+  //for every projectile
+    //if any part of that projectile overlaps with an alien
+      //delete that alien and increase Score
+    //if any part of that projectile overlaps with an barriers
+      //delete that barrier
+    //if any part of that projectile overlaps with the shipLocation
+      //decrement life
+      //change shipLocation to center
+      /*
+      for (i=0; i < projectileArray.length; i++){
+        var left = projectileArray[i].x;
+        var right = projectileArray[i].x + projectileArray[i].width;
+        var up = projectileArray[i].y;
+        var down = projectileArray[i].y + projectileArray[i].height;
+        for (x=0; x < alienArray.length; x++){
+          if (left < alienArray[x].row + alienArray[x].width && )
+        }
+        for (y=0; y < barrierArray.length; y++){
+          
+        }
+        if (){
+          
+        }
+    }
+    */
+}
 function rngShoot(aliensLeft){
 	var x = Math.floor((Math.random() * aliensLeft) + 1);
 	return x;
