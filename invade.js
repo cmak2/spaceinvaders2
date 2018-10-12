@@ -6,6 +6,7 @@ var alienArray = [];
 var barrierArray = [];
 var projectileArray = [];
 var shipLocation = 0;
+var playerLives = 3;
 
 
 const alien = {
@@ -189,10 +190,12 @@ var canvas = document.getElementById("canvas");
 }
 
 function update(ctx, direction){
-  //redraw aliens, barriers, and projectiles
+  //redraw aliens, barriers, projectiles, score, and lives
   direction = redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
   redrawProjectile(ctx);
+  drawLives(ctx);
+  drawScore(ctx);
   return direction;
 }
 
@@ -244,7 +247,16 @@ function checkCollide(ctx){
     return type;
 
 }
-
+function drawLives(ctx){
+  ctx.strokeStyle="white";
+  ctx.font = "1em Impact";
+  ctx.strokeText(`Lives: ${playerLives}`,50,540);
+}
+function drawScore(ctx){
+  ctx.strokeStyle="white";
+  ctx.font = "1em Impact";
+  ctx.strokeText(`Score: ${playerScore}`,1050,540);
+}
 function rngShoot(aliensLeft){
 	var x = Math.floor((Math.random() * aliensLeft) + 1);
 	return x;
@@ -343,6 +355,12 @@ function redrawAliens(ctx, direction){
 
 function redrawBarriers(ctx){
 	//redraw the barriers based on which ones are left in barrierArray
+  ctx.fillStyle = "red";
+  for (i=0; i < barrierArray.length; i++){
+    if (barrierArray[i]){
+      ctx.fillRect(barrierArray[i].x, barrierArray[i].y, barrierArray[i].width, barrierArray[i].height);
+    }
+  }
 }
 function redrawProjectile(ctx){
   for (i=0; i < projectileArray.length; i++){
