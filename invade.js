@@ -148,16 +148,16 @@ function gameOver(){
 		ctx.strokeText("You Won",550,200);
 	}
 	else{
+    ctx.strokeStyle="white";
 		ctx.strokeText("Game Over",550,90);
-		ctx.strokeStyle="red";
+		
 		ctx.strokeText("You Lost",550,200);
 	}
 	ctx.textAlign = "center";
-	ctx.strokeText("Game Over",550,120);
 	ctx.strokeStyle="white";
 	ctx.strokeText(`Your Score: ${playerScore}`,550,300);
 
-
+  highscore(playerScore);
   ctx.strokeStyle="#39ff14";
   ctx.strokeRect(350,350,400,100);
   ctx.font = "4em Impact";
@@ -237,7 +237,7 @@ function update(ctx){
   //update projectile positions
 
   clearScreen();
-  rredrawProjectile(ctx);
+  redrawProjectile(ctx);
   redrawAliens(ctx); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
   drawShip(ctx, shipLocation);
