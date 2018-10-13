@@ -124,15 +124,16 @@ function gameOver(){
 	var ctx = canvas.getContext("2d");
 	ctx.font = "8em Impact";
 	if(gameWon){
+		ctx.strokeText("Congratulations", 550, 120);	
 		ctx.strokeStyle="#39ff14";
 		ctx.strokeText("You Won",550,300);
 	}
 	else{
+		ctx.strokeText("Game Over",550,120);
 		ctx.strokeStyle="red";
 		ctx.strokeText("You Lost",550,300);
 	}
 	ctx.textAlign = "center";
-	ctx.strokeText("Game Over",550,120);
 	ctx.strokeStyle="white";
 	ctx.strokeText(`Your Score: ${playerScore}`,550,450);
 }
