@@ -233,6 +233,15 @@ function update(ctx){
     callbackClear(gameOver);
     //gameOver(won, playerScore);
   }
+  for (v=0; v < alienArray.length; v++){
+    if (alienArray[v] && (alienArray[v].alienY + 20) >= 400){
+      win = false;
+      clearInterval(upd);
+      clearInterval(ast)
+      console.log('lose');
+      callbackClear(gameOver);
+    }
+  }
   return;
 }
 
@@ -314,13 +323,19 @@ function drawScore(ctx){
   ctx.strokeText(`Score: ${playerScore}`,1050,540);
 }
 function rngShoot(){
-  while (true){
-	 var x = Math.floor((Math.random() * parseInt(aliensLeft)) + 1);
-   if (alienArray[x]){
-    break;
+	 var x = Math.floor((Math.random() * parseInt(aliensLeft)));
+   var nonNull = 0;
+   for (i = 0; i < alienArray.length; i++){
+      if (alienArray[i]){
+        if (nonNull == x){
+          return i;
+        }
+        else{
+          nonNull = nonNull + 1;
+        }
+      }
+
    }
-  }
-	return x;
 }
 
 function drawCanvas(ctx) {
@@ -624,6 +639,7 @@ function dealWithKeyboard(event){
 	}
 	else if (event.keyCode == 32){
     playerShoot(ctx);
+    setTimeout(function(){}, 3000);
   }
 		//space
 		//shoot and register hit/miss based on alien locations and update score, alienArray and aliensLeft
