@@ -202,15 +202,15 @@ var canvas = document.getElementById("canvas");
 
 }
 
-function update(ctx, direction){
+function update(ctx){
   //redraw aliens, barriers, projectiles, score, and lives
   //clear screen?
   //check collisions
   //update alien positions
   //update projectile positions
-  
+
   clearScreen();
-  direction = redrawAliens(ctx, direction); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
+  redrawAliens(ctx); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
   redrawProjectile(ctx);
   drawShip(ctx, shipLocation);
@@ -233,7 +233,7 @@ function update(ctx, direction){
     callbackClear(gameOver);
     //gameOver(won, playerScore);
   }
-  return direction;
+  return;
 }
 
 function checkCollide(ctx){
