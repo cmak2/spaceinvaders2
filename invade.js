@@ -90,7 +90,7 @@ function titlescreen(){
 	//$("#canvas").fillText("Hello",10,50).css("color", "white");
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
-	ctx.font = "8em Impact";
+	ctx.font = "7em Impact";
 	ctx.strokeStyle="#FF69B4";
 	ctx.textAlign = "center";
 	ctx.strokeText("Space Invaders II",550,120);
@@ -99,8 +99,8 @@ function titlescreen(){
     ctx.strokeStyle = '#39ff14';
     ctx.strokeRect(450,300,200,100);
     ctx.fill();
-    ctx.font = "5em Impact";
-    ctx.strokeText("PLAY",550,380);
+    ctx.font = "4em Impact";
+    ctx.strokeText("PLAY",550,375);
 }
 
 
@@ -122,20 +122,27 @@ function gameOver(){
   var gameWon = win;
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
-	ctx.font = "8em Impact";
+  currentScreen = "Gameover";
+	ctx.font = "6em Impact";
 	if(gameWon){
-		ctx.strokeText("Congratulations", 550, 120);	
+		ctx.strokeText("Congratulations", 550, 90);
 		ctx.strokeStyle="#39ff14";
-		ctx.strokeText("You Won",550,300);
+		ctx.strokeText("You Won",550,200);
 	}
 	else{
-		ctx.strokeText("Game Over",550,120);
+		ctx.strokeText("Game Over",550,90);
 		ctx.strokeStyle="red";
-		ctx.strokeText("You Lost",550,300);
+		ctx.strokeText("You Lost",550,200);
 	}
 	ctx.textAlign = "center";
 	ctx.strokeStyle="white";
-	ctx.strokeText(`Your Score: ${playerScore}`,550,450);
+	ctx.strokeText(`Your Score: ${playerScore}`,550,300);
+
+
+  ctx.strokeStyle="#39ff14";
+  ctx.strokeRect(350,350,400,100);
+  ctx.font = "4em Impact";
+  ctx.strokeText("Play Again",550,425);
 }
 /*---------------------------------------*/
 
@@ -211,9 +218,9 @@ function update(ctx){
   //update projectile positions
 
   clearScreen();
+  rredrawProjectile(ctx);
   redrawAliens(ctx); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
-  redrawProjectile(ctx);
   drawShip(ctx, shipLocation);
   drawLives(ctx);
   drawScore(ctx);
