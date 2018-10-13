@@ -85,6 +85,21 @@ function getPosition(event)
   	clearScreen();
   	currentScreen = "game";
   	playGame();
+  } else if (y < 450 && y > 350 && x < 750 && x > 350 && currentScreen==="Gameover") {
+    clearScreen();
+    titlescreen();
+    currentScreen = "title";
+    direction = 'right';
+    playerScore = 0;
+    alienArray = [];
+    barrierArray = [];
+    projectileArray = [];
+    shipLocation = 0;
+    playerLives = 3;
+    aliensLeft = 40;
+    upd = 0;
+    ast = 0;
+    win = false;
   }
 
 }
@@ -632,29 +647,31 @@ function playerShoot(ctx){
 function dealWithKeyboard(event){
   var canvas = document.getElementById("canvas");
   var ctx = canvas.getContext("2d");
-	if (event.keyCode == 37){
-		//left
-    if (shipLocation > 100){
-   	shipLocation = shipLocation - 10;
-	drawShip(ctx, shipLocation);
-    }
+  if(currentScreen==="game") {
+	   if (event.keyCode == 37){
+		     //left
+         if (shipLocation > 100){
+   	       shipLocation = shipLocation - 10;
+	          drawShip(ctx, shipLocation);
+          }
 
-		//redraw ship and update loacation variables
-	}
-	else if (event.keyCode == 39){
-		//redraw ship and update loacation variables
-		//right
-    if (shipLocation < 1000){
-    shipLocation = shipLocation + 10;
-    drawShip(ctx, shipLocation);
+		        //redraw ship and update loacation variables
+  	}
+  	else if (event.keyCode == 39){
+  		//redraw ship and update loacation variables
+  		//right
+      if (shipLocation < 1000){
+      shipLocation = shipLocation + 10;
+      drawShip(ctx, shipLocation);
+      }
+  	}
+  	else if (event.keyCode == 32){
+      playerShoot(ctx);
+      setTimeout(function(){}, 3000);
     }
-	}
-	else if (event.keyCode == 32){
-    playerShoot(ctx);
-    setTimeout(function(){}, 3000);
+  		//space
+  		//shoot and register hit/miss based on alien locations and update score, alienArray and aliensLeft
   }
-		//space
-		//shoot and register hit/miss based on alien locations and update score, alienArray and aliensLeft
 }
 /*-------------------------------*/
 
