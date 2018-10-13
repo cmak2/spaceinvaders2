@@ -63,6 +63,7 @@ const barrier = {
 /*Game startup/endgame stuff*/
 window.onload = function() {
   titlescreen();
+  update_scores();
   currentScreen = "title";
 };
 document.addEventListener("mousedown", getPosition, false);
@@ -147,13 +148,12 @@ function gameOver(){
 	else{
     ctx.strokeStyle="white";
 		ctx.strokeText("Game Over",550,90);
-		ctx.strokeStyle="red";
 		ctx.strokeText("You Lost",550,200);
 	}
 	ctx.textAlign = "center";
 	ctx.strokeStyle="white";
 	ctx.strokeText(`Your Score: ${playerScore}`,550,300);
-
+  highscore(playerScore);
 
   ctx.strokeStyle="#39ff14";
   ctx.strokeRect(350,350,400,100);
