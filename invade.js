@@ -237,7 +237,7 @@ function update(ctx){
   //update projectile positions
 
   clearScreen();
-  rredrawProjectile(ctx);
+  redrawProjectile(ctx);
   redrawAliens(ctx); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
   drawShip(ctx, shipLocation);
