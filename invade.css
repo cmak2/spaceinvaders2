@@ -1,0 +1,9 @@
+#canvas{
+    background-color:black;
+    box-shadow: 10px 10px 5px lightgrey;
+    border: 3px solid red;
+    border-radius: 20px;
+}
+#title{
+	text-shadow: 0 0 3px #FF0000;
+}
