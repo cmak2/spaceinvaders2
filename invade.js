@@ -182,7 +182,7 @@ var canvas = document.getElementById("canvas");
 		//most gameplay stuff goes in here
 
   ast = setInterval(alienShoot, 1000, ctx, aliensLeft);
-
+ 
   //setInterval(checkCollide, 300, ctx);
 
 	if (aliensLeft === 0){
@@ -259,7 +259,7 @@ function checkCollide(ctx){
         if (projectileArray[i].player){ //only the player can destroy aliens
           for (x=0; x < alienArray.length; x++){
             if (alienArray[x]){
-              if (left < alienArray[x].column + alienArray[x].alienX && right > alienArray[x].column && up < alienArray[x].row + alienArray[x].alienY && down > alienArray[x].row){
+              if (left < (alienArray[x].alienX + 20) && right > (alienArray[x].alienX - 20) && up < (alienArray[x].alienY + 20) && down > (alienArray[x].alienY - 20)){
                 //remove aliens
                 type = alienArray[x].type;
                 incrementScore(type);
