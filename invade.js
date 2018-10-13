@@ -93,7 +93,7 @@ function titlescreen(){
 	//$("#canvas").fillText("Hello",10,50).css("color", "white");
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
-	ctx.font = "8em Impact";
+	ctx.font = "7em Impact";
 	ctx.strokeStyle="#FF69B4";
 	ctx.textAlign = "center";
 	ctx.strokeText("Space Invaders II",550,120);
@@ -102,8 +102,8 @@ function titlescreen(){
     ctx.strokeStyle = '#39ff14';
     ctx.strokeRect(450,300,200,100);
     ctx.fill();
-    ctx.font = "5em Impact";
-    ctx.strokeText("PLAY",550,380);
+    ctx.font = "4em Impact";
+    ctx.strokeText("PLAY",550,375);
 }
 
 
@@ -125,20 +125,28 @@ function gameOver(){
   var gameWon = win;
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
-	ctx.font = "8em Impact";
+  currentScreen = "Gameover";
+	ctx.font = "6em Impact";
 	if(gameWon){
+		ctx.strokeText("Congratulations", 550, 90);
 		ctx.strokeStyle="#39ff14";
-		ctx.strokeText("You Won",550,300);
+		ctx.strokeText("You Won",550,200);
 	}
 	else{
+		ctx.strokeText("Game Over",550,90);
 		ctx.strokeStyle="red";
-		ctx.strokeText("You Lost",550,300);
+		ctx.strokeText("You Lost",550,200);
 	}
 	ctx.textAlign = "center";
 	ctx.strokeText("Game Over",550,120);
 	ctx.strokeStyle="white";
-	ctx.strokeText(`Your Score: ${playerScore}`,550,450);
-  highscore(playerScore);
+	ctx.strokeText(`Your Score: ${playerScore}`,550,300);
+
+
+  ctx.strokeStyle="#39ff14";
+  ctx.strokeRect(350,350,400,100);
+  ctx.font = "4em Impact";
+  ctx.strokeText("Play Again",550,425);
 }
 /*---------------------------------------*/
 
@@ -186,7 +194,7 @@ var canvas = document.getElementById("canvas");
 		//most gameplay stuff goes in here
 
   ast = setInterval(alienShoot, 1000, ctx, aliensLeft);
- 
+
   //setInterval(checkCollide, 300, ctx);
 
 	if (aliensLeft === 0){
@@ -214,9 +222,9 @@ function update(ctx){
   //update projectile positions
 
   clearScreen();
+  rredrawProjectile(ctx);
   redrawAliens(ctx); //redraw the aliens moving right (delay 1 second?). If aliens reach side, flip direction and lower one level
   redrawBarriers(ctx);
-  redrawProjectile(ctx);
   drawShip(ctx, shipLocation);
   drawLives(ctx);
   drawScore(ctx);
@@ -280,7 +288,7 @@ function checkCollide(ctx){
                 aliensLeft = aliensLeft - 1;
                 collide.push(i);
                 break;
-                
+
                 //incrementscore///////////
               }
             }
@@ -305,7 +313,7 @@ function checkCollide(ctx){
             shipLocation = 550;
             //decrement lives
             playerLives = playerLives - 1;
-            
+
             collide.push(i);
           }
         }
@@ -354,7 +362,7 @@ function drawAliens(ctx){
 	//initially draw all 40 (can change the number later)
   initial_height = 50;
   initial_width = 50;
-  
+
   for (i=0; i < 4; i++){
     height = initial_height + (i * 50);
     for (y=0; y < 10; y++){
@@ -570,7 +578,7 @@ function redrawBarriers(ctx){
   }
 }
 function redrawProjectile(ctx){
-  
+
   for (var i = 0; i < projectileArray.length; i++){
 
     if (projectileArray[i]){
@@ -616,7 +624,7 @@ function playerShoot(ctx){
   p.y = 500;
   p.player = true;
   p.color = "pink";
-  
+
   projectileArray.push(p);
 }
 
